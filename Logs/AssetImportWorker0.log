@@ -1,0 +1,167 @@
+Using pre-set license
+Built from '2020.3/staging' branch; Version is '2020.3.8f1 (507919d4fff5) revision 5273881'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10 Enterprise; OS build 19041.1052; Version 2004; 64bit' Language: 'pt' Physical Memory: 8058 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.3.8f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/Users/Aspire E15/Documents/unity/Hummingbirds
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+56164
+Successfully changed project path to: C:/Users/Aspire E15/Documents/unity/Hummingbirds
+C:/Users/Aspire E15/Documents/unity/Hummingbirds
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 78.90 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.3.8f1 (507919d4fff5)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.8f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Aspire E15/Documents/unity/Hummingbirds/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce 920M (ID=0x1299)
+    Vendor:   
+    VRAM:     2020 MB
+    Driver:   21.21.13.7654
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.8f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.8f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56368
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.003671 seconds.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 137.43 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.347 seconds
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.010754 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 82.20 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  8.279 seconds
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.12 seconds
+Refreshing native plugins compatible for Editor in 1.81 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2835 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 128.7 MB.
+System memory in use after: 125.9 MB.
+
+Unloading 60 unused Assets to reduce memory usage. Loaded Objects now: 3230.
+Total: 11.339800 ms (FindLiveObjects: 0.602500 ms CreateObjectMapping: 0.409400 ms MarkObjects: 7.920700 ms  DeleteObjects: 2.403900 ms)
+
+========================================================================
+Received Import Request.
+  path: Assets/Hummingbird/Scripts/FlowerArea.cs
+  artifactKey: Guid(8ac33e1903713a541af3c5b8a2ce365e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hummingbird/Scripts/FlowerArea.cs using Guid(8ac33e1903713a541af3c5b8a2ce365e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0b45fb006419c1ead144a1fef69dc765') in 0.068080 seconds
+  Import took 0.076478 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 111.353520 seconds.
+  path: Assets/Hummingbird/Scripts/HummingbirdAgent.cs
+  artifactKey: Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hummingbird/Scripts/HummingbirdAgent.cs using Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8360c2af0af81c106f11074dc6d4c883') in 0.004541 seconds
+  Import took 0.012854 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.777903 seconds.
+  path: Assets/Hummingbird/Scripts/HummingbirdAgent.cs
+  artifactKey: Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hummingbird/Scripts/HummingbirdAgent.cs using Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8360c2af0af81c106f11074dc6d4c883') in 0.008262 seconds
+  Import took 0.016744 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 15.637004 seconds.
+  path: Assets/Hummingbird/Scripts/HummingbirdAgent.cs
+  artifactKey: Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hummingbird/Scripts/HummingbirdAgent.cs using Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '07e18725e81d313a6ef47c0636c85bda') in 0.008242 seconds
+  Import took 0.021388 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 135.048857 seconds.
+  path: Assets/Hummingbird/Scripts/HummingbirdAgent.cs
+  artifactKey: Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hummingbird/Scripts/HummingbirdAgent.cs using Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b2a01bce07d4dc4cd399d35e688e5cd6') in 0.017676 seconds
+  Import took 0.036004 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.009918 seconds.
+  path: Assets/Hummingbird/Scripts/HummingbirdAgent.cs
+  artifactKey: Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hummingbird/Scripts/HummingbirdAgent.cs using Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b2a01bce07d4dc4cd399d35e688e5cd6') in 0.020067 seconds
+  Import took 0.050252 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 92.126942 seconds.
+  path: Assets/Hummingbird/Scripts/HummingbirdAgent.cs
+  artifactKey: Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hummingbird/Scripts/HummingbirdAgent.cs using Guid(5e6ba494557ea104eaea56b4868e34e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4b5022ba1dc021ade4e17bdc8eb264ea') in 0.008932 seconds
+  Import took 0.017827 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 106.349702 seconds.
+  path: Assets/Hummingbird/Scripts/FlowerArea.cs
+  artifactKey: Guid(8ac33e1903713a541af3c5b8a2ce365e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hummingbird/Scripts/FlowerArea.cs using Guid(8ac33e1903713a541af3c5b8a2ce365e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b68c500a513706df670c2de1ab47bf53') in 0.023149 seconds
+  Import took 0.045748 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 238.701206 seconds.
+  path: Assets/FlowerArea.cs
+  artifactKey: Guid(ad09bd105ee2a4545a5478e943218d46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FlowerArea.cs using Guid(ad09bd105ee2a4545a5478e943218d46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ca188a8f1c58b15871633737f6b60b09') in 0.005396 seconds
+  Import took 0.013084 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.012704 seconds.
+  path: Assets/FlowerArea.cs
+  artifactKey: Guid(ad09bd105ee2a4545a5478e943218d46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FlowerArea.cs using Guid(ad09bd105ee2a4545a5478e943218d46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ca188a8f1c58b15871633737f6b60b09') in 0.006232 seconds
+  Import took 0.016050 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 19.413353 seconds.
+  path: Assets/FlowerArea.cs
+  artifactKey: Guid(ad09bd105ee2a4545a5478e943218d46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FlowerArea.cs using Guid(ad09bd105ee2a4545a5478e943218d46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b0d9bc321c24bf498832600d8967d189') in 0.011550 seconds
+  Import took 0.039989 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007374 seconds.
+  path: Assets/FlowerArea.cs
+  artifactKey: Guid(ad09bd105ee2a4545a5478e943218d46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FlowerArea.cs using Guid(ad09bd105ee2a4545a5478e943218d46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b0d9bc321c24bf498832600d8967d189') in 0.004612 seconds
+  Import took 0.039417 seconds .
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
