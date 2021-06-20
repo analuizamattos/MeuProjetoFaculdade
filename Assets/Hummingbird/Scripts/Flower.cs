@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Manages a single flower with nectar
+/// Desenvolve uma unica flor com nectar
 /// </summary>
 
 public class Flower : MonoBehaviour
@@ -16,19 +16,19 @@ public class Flower : MonoBehaviour
 
 
     /// <summary>
-    /// The tigger collider representing the nectar
+    /// O colisor tigger representando o nectar
     /// </summary>
     [HideInInspector]
     public Collider nectarCollider;
 
-    //The solid collider representing the flower petals
+    //O colisor solido que representa as petalas da flor
     private Collider flowerCollider;
 
-    //The flower�s material
+    //O material da flor
     private Material flowerMaterial;
 
     /// <summary>
-    /// A vector poiting straight out of the flower
+    /// Um vetor apontando para fora da flor
     /// </summary>
     public Vector3 FlowerUpVector
     {
@@ -40,7 +40,7 @@ public class Flower : MonoBehaviour
 
 
     /// <summary>
-    /// The center position of the nectar collider
+    /// A posição central do colisor de nectar
     /// </summary>
     public Vector3 FlowerCenterPosition
     {
@@ -52,12 +52,12 @@ public class Flower : MonoBehaviour
 
 
     /// <summary>
-    /// The amount of nectar remaining in the flower
+    /// A quantidade de nectar restante na flor
     /// </summary>
     public float NectarAmount { get; private set; }
 
     /// <summary>
-    /// Whether the flower has any nectar remaining
+    /// Se a flor tem algum nectar restante
     /// </summary>
     public bool HasNectar
     {
@@ -69,64 +69,64 @@ public class Flower : MonoBehaviour
 
 
     /// <summary>
-    /// Attempts to remove nectar from the flower
+    /// Tenta remover o nectar da flor
     /// </summary>
-    /// <param name="amount"> The amount of nectar to remove</param>
-    /// <returns>The actual amount successfully removed</returns>
+    /// <param name="amount"> A quantidade de nectar a ser removida</param>
+    /// <returns>O valor real removido com sucesso</returns>
     public float Feed(float amount)
     {
-        // Track how much nectar was successfully taken (cannot take mmore than is available)
+        // Rastreia quanto nectar foi retirado com sucesso (não pode demorar mais do que o disponível)
         float nectarTaken = Mathf.Clamp(amount, 0f, NectarAmount);
 
-        //Subtract the nectar
+        //Subtraia o nectar
         NectarAmount -= amount;
 
         if (NectarAmount <= 0)
         {
-            //No nectar ramaining
+            //Sem nectar germinando
             NectarAmount = 0;
 
-            //Disable the flower and nectar colliders
+            //Desativa os coletores de flor e néctar
             flowerCollider.gameObject.SetActive(false);
             nectarCollider.gameObject.SetActive(false);
 
-            //Change the flower color to indicate that it is empty
+            //Muda a cor da flor para indicar que está vazia
             flowerMaterial.SetColor("_BaseColor", emptyFlowerColor);
 
         }
 
-        // Return the amount of nectar that was taken
+        // Retorna a quantidade de nectar que foi retirada
         return nectarTaken;
 
     }
 
 
     /// <summary>
-    /// Resets the flower
+    /// Redefine a flor
     /// </summary>
     public void ResetFlower()
     {
-        //Refill the nectar
+        //Refill o nectar
         NectarAmount = 1f;
 
-        //Enable the flower and nectar colliders
+        //Habilita os coletores de flores e néctares
         flowerCollider.gameObject.SetActive(true);
         nectarCollider.gameObject.SetActive(true);
 
-        //Change the flower color to indicate that it is full
+        //Muda a cor da flor para indicar que está cheia
         flowerMaterial.SetColor("_BaseColor", fullFlowerColor);
     }
 
     /// <summary>
-    /// Called when the flower wakes up
+    /// Chamado quando a flor acorda
     /// </summary>
     private void Awake()
     {
-        //Find the flower�s mesh renderer and get the main material
+        //Encontra o renderizador de malha de flores e obtem o material principal
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         flowerMaterial = meshRenderer.material;
 
-        //Find flower and nectar colliders
+        //Encontra coletores de flores e nectares
         flowerCollider = transform.Find("FlowerCollider").GetComponent<Collider>();
         nectarCollider = transform.Find("FlowerNectarCollider").GetComponent<Collider>();
     }

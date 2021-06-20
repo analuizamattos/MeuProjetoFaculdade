@@ -6,7 +6,7 @@ using Unity.MLAgents.Sensors;
 
 
 /// <summary>
-/// A hummingbird Machine Learning Agent
+/// Beija Flor Machine Learning Agent
 /// </summary>
 public class HummingbirdAgent : Agent
 {
@@ -22,69 +22,69 @@ public class HummingbirdAgent : Agent
     [Tooltip("Transform at the tip of the beak")]
     public Transform beakTip;
 
-    [Tooltip("The agent�s camera")]
+    [Tooltip("The agent�s camera")]
     public Camera agentCamera;
 
     [Tooltip("Wheter this is training or gameplay mode")]
     public bool trainingMode;
 
-    //The rigidbody of the agent
+    //O rigidbody do agent
     new private Rigidbody rigidbody;
 
-    //Flower area that the agent is in
+    //Área de flores em que o agente está
     private FlowerArea flowerArea;
 
-    //The nearest flower to the agent
+    //A flor mais próxima do agente
     private Flower nearestFlower;
 
-    //Allows for smoother pitch changes
+    //Permite mudanças de tom mais suaves
     private float smoothPitchChange = 0f;
 
-    //Allows for smoother yaw changes
+    //Permite mudanças de guinada mais suaves
     private float smoothYawChange = 0f;
 
-    //maximum angle that the bird can pitch up or down
+    //ângulo máximo que o pássaro pode lançar para cima ou para baixo
     private const float MaxPitchAngle = 80f;
 
-    //Maximum distance from the beak tip to accept nectar collision
+    //Distância máxima da ponta do bico para aceitar a colisão do néctar
     private const float BeakTipRadius = 0.008f;
 
-    // Whether the agent is frozen (intentionally not flying)
+    // Se o agente está congelado (intencionalmente não voando)
     private bool frozen = false;
 
 
     /// <summary>
-    /// The amount of nectar the agent has obtained this episode
+    /// A quantidade de néctar que o agente obteve neste episódio
     /// </summary>
     public float NectarObtained { get; private set; }
 
 
-    //Initialize the agent
+    //Inicializa o agente
     public override void Initialize()
     {
         rigidbody = GetComponent<Rigidbody>();
         flowerArea = GetComponentInParent<FlowerArea>();
 
-        //If not traing mode, no max step, play forever
+        //Se não estiver no modo de traing, sem max step, jogue para sempre
         if (!trainingMode) MaxStep = 0;
     }
 
 
     /// <summary>
-    /// Reset the agent when an episode begins
+    /// Reinicialize o agente quando um episódio começar
     /// </summary>
     public override void OnEpisodeBegin()
     {
         if(trainingMode)
         {
-            //Only reset flowers in training when there is one agent per area
+            //Somente redefina flores no treinamento quando houver um agente por área
             flowerArea.ResetFlowers();
         }
 
-        //Reset nectar obtained
+        //Redefini o néctar obtido
         NectarObtained = 0f;
 
-        //Zero out velocities so that movement stops before a new episode begins
+        //Zera as velocidades para que o movimento pare antes que um novo episódio comece
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVeocity = Vector3.zero;
 
@@ -96,18 +96,18 @@ public class HummingbirdAgent : Agent
             inFrontOfFlower = UnityEngine.Random.value > .5f;
         }
 
-        //Move the agent to a new random position
+        //Move o agente para uma nova posição aleatória
         MoveToSafeRandomPosition(inFrontOfFlower);
 
-        //Recalculate the nearest flower now that the agent has moved
+        //Recalcula a flor mais próxima agora que o agente mudou
         UpdateNearestFlower();
     }
 
 
     /// <summary>
-    /// Called when an action is received from either the player input or the neural network
+    /// Chamado quando uma ação é recebida da entrada do jogador ou da rede neural
     /// 
-    /// vectorAction[i] represents:
+    /// vectorAction[i] representa:
     /// Index 0: move vector x (+1 = right, -1 = left)
     /// Index 1: move vector y (+1 = up, -1 = down)
     /// Index 2: move vector z (+1 = forward, -1 = backward)
@@ -117,100 +117,100 @@ public class HummingbirdAgent : Agent
     /// <param name="vectorAction">The actions to take</param>
     public override void OnActionReceived(float[] vectorAction)
     {
-        //Don�t take action if frozen
+        //Não tome providências se estiver congelado
         if (frozen) return;
 
-        //calculate movement vector
+        //calcula vetor de movimento
         Vector3 move = new Vector3(vectorAction[0], vectorAction[1], vectorAction[2]);
 
-        //Add force in the direction of the move vector
+        //Adicione força na direção do vetor de movimento
         rigidbody.AddForce(move * moveForce);
 
-        //Get the current rotation
+        //Obtenha a rotação atual
         Vector3 rotationVector = transform.rotation.eulerAngles;
 
-        //Calculate pitch and yaw rotation
+        //Calcula a rotação de inclinação e guinada
         float pitchChange = vectorAction[3];
         float yawChange = vectorAction[4];
 
-        //Calculate smooth rotation changes
+        //Calcula mudanças suaves de rotação
         smoothPitchChange = Mathf.MoveTowards(smoothPitchChange, pitchChange, 2f * Time.fixedDeltaTime);
         smoothYawChange = Mathf.MoveTowards(smoothYawChange, yawChange, 2f * Time.fixedDeltaTime);
 
 
-        //Calculate new pitch and yaw based on smoothed values
-        //Clamp pitch to avoid flipping upside down
+        //Calcule a nova inclinação e guinada com base em valores suavizados
+        //Afixa o passo para evitar virar de cabeça para baixo
         float pitch = rotationVector.x + smoothPitchChange * Time.fixedDeltaTime * pitchSpeed;
         if (pitch > 180f) pitch -= 360f;
         pitch = Mathf.Clamp(pitch, -MaxPitchAngle, MaxPitchAngle);
 
         float yaw = rotationVector.y + smoothYawChange * Time.fixedDeltaTime * yawSpeed;
 
-        //Apply the new rotation
+        //Aplicar a nova rotação
         transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
     }
 
 
     /// <summary>
-    /// Collect vector observations from the environment
+    /// Colete observações vetoriais do ambiente
     /// </summary>
     /// <param name="sensor">The vector sensor</param>
     public override void CollectObservations(VectorSensor sensor)
     {
-        //If nearest is null, observe an empty array and return early
+        //Se o mais próximo for nulo, observe uma matriz vazia e retorne mais cedo
         if (nearestFlower == null)
         {
             sensor.AddObservation(new float[10]);
             return;
         }
         
-        //Observe the agent�s local rotation (4 observations)
+        //Observa a rotação local do agente (4 observações)
         sensor.AddObservation(transform.localRotation.normalized);
 
-        //Get a vector from the beak tip to the nearest flower
+        //Obtem um vetor da ponta do bico até a flor mais próxima
         Vector3 toFlower = nearestFlower.FlowerCenterPosition - beakTip.position;
 
-        //Observe a normalized vector pointing to the nearest flower (3 observations)
+        //Observa um vetor normalizado apontando para a flor mais próxima (3 observações)
         sensor.AddObservation(toFlower.normalized);
 
-        //Observe a dot product that indicates whether the beak tip is in front of the flower (1 observations)
-        // (+1 means that the beak tip is directly in front of the flower, -1 means directly behind)
+        //Observa um produto escalar que indica se a ponta do bico está na frente da flor (1 observação)
+        // (+1 significa que a ponta do bico está diretamente na frente da flor, -1 significa diretamente atrás)
         sensor.AddObservation(Vector3.Dot(toFlower.normalized, -nearestFlower.FlowerUpVector.normalized));
 
-        //Observe a dot product that indicates whether the beak tip is pointing toward the flower (1 observations)
-        // (+1 means that the beak tip is pointing directly at the flower, -1 means directly away)
+        //Observa um produto escalar que indica se a ponta do bico está apontando para a flor (1 observação)
+        // (+1 significa que a ponta do bico está apontando diretamente para a flor, -1 significa diretamente para longe)
         sensor.AddObservation(Vector3.Dot(beakTip.forward.normalized, -nearestFlower.FlowerUpVector.normalized));
 
-        //Observe the relative distance from the beak tip to the flower (1 observations)
+        //Observa a distância relativa da ponta do bico à flor (1 observação)
         sensor.AddObservation(toFlower.magnitude / FlowerArea.AreaDiameter);
 
-        //10 total observations
+        //10 observacoes
     }
 
 
     /// <summary>
-    /// When Behavior Type is set to "Heuristic Only" on the agent�s Behavior Parameters,
-    /// this function will be called. Its return values will be fed into
+    /// Quando o Tipo de comportamento é definido como "Somente heurística" nos Parâmetros de comportamento do agente,
+    /// esta função será chamada. Seus valores de retorno serão alimentados em
     /// <see cref="OnActionReceived(float[])"/> instead of using the neural network
     /// </summary>
     /// <param name="actionsOut">And output action array</param>
     public override void Heuristic(float[] actionsOut)
     {
-        //Create placeholders for all movement/turning
+        // Crie marcadores de posição para todos os movimentos / giros
         Vector3 forward = Vector3.zero;
         Vector3 left = Vector3.zero;
         Vector3 up = Vector3.zero;
         float pitch = 0f;
         float yaw = 0f;
 
-        //Convert keyboard inputs to movement and turning
-        //All values should be between -1 and +1
+        // Converte as entradas do teclado em movimento e giro
+        //Todos os valores devem estar entre -1 e +1
 
-        //Forward/backward
+        //Para frente / para trás
         if (Input.GetKey(KeyCode.W)) forward = transform.forward;
         else if (Input.GetKey(KeyCode.S)) forward = -transform.forward;
 
-        //Left/right
+        //Esquerda/direita
         if (Input.GetKey(KeyCode.A)) left = -transform.right;
         else if (Input.GetKey(KeyCode.D)) left = transform.right;
 
@@ -222,14 +222,14 @@ public class HummingbirdAgent : Agent
         if (Input.GetKey(KeyCode.UpArrow)) pitch = 1f;
         else if (Input.GetKey(KeyCode.DownArrow)) pitch = -1f;
 
-        //Turn left/right
+        //Vire esquerda/direita
         if (Input.GetKey(KeyCode.LeftArrow)) yaw = -1f;
         else if (Input.GetKey(KeyCode.RightArrow)) yaw = 1f;
 
-        //Combine the movement vector and normalize
+        //Combine o vetor de movimento e normalize
         Vector3 combined = (forward + left + up).normalized;
 
-        //Add the 3 movement values, pitch and yaw to the actionsOut array
+        //Adicione os 3 valores de movimento, pitch e yaw à matriz actionsOut
         actionsOut[0] = combined.x;
         actionsOut[1] = combined.y;
         actionsOut[2] = combined.z;
@@ -240,7 +240,7 @@ public class HummingbirdAgent : Agent
 
 
     /// <summary>
-    /// Prevent the agent from moving and taking actions
+    /// Impede que o agente se mova e execute ações
     /// </summary>
     public void FreezeAgent()
     {
@@ -251,7 +251,7 @@ public class HummingbirdAgent : Agent
 
 
     /// <summary>
-    /// Resume agent movement and actions
+    /// Retoma o movimento e as ações do agente
     /// </summary>
     public void UnfreezeAgent()
     {
@@ -261,31 +261,31 @@ public class HummingbirdAgent : Agent
     }
 
     /// <summary>
-    /// Move the agent to a safe eandom position (i.e. does not collide with anything)
-    /// If in front of flower, also point the beak at the flower
+    /// Move o agente para uma posição segura (ou seja, não colide com nada)
+    /// Se estiver na frente da flor, aponte também o bico para a flor
     /// </summary>
-    /// <param name="inFrontOfFlower">Whether to choose a spot in front of a flower</param>
+    /// <param name="inFrontOfFlower">Se deve escolher um local em frente a uma flor</param>
     private void MoveToSafeRandomPosition(bool inFrontOfFlower)
     {
         bool safePositionFound = false;
-        int attemptsRemaining = 100; //Prevent an infinite loop
+        int attemptsRemaining = 100; //Previne um loop infinito
         Vector3 potentialPosition = Vector3.zero;
         Quaternion potentialRotation = new Quaternion();
 
-        //Loop until a safe position is found or we run out of attempts
+        //Faz um loop até que uma posição segura seja encontrada ou esgotadas as tentativas
         while(!safePositionFound && attemptsRemaining > 0)
         {
             attemptsRemaining--;
             if(inFrontOfFlower)
             {
-                //Pick a random flower
+                //Escolhe uma flor aleatória
                 Flower randomFlower = flowerArea.Flowers[UnityEngine.Random.Range(0, flowerArea.Flowers.Count)];
 
-                //Position 10 to 20 cm in front of the flower
+                //Posiciona 10 a 20 cm na frente da flor
                 float distanceFromFlower = UnityEngine.Random.Range(.1f, .2f);
                 potentialPosition = randomFlower.transform.position + randomFlower.FlowerUpVector * distanceFromFlower;
 
-                //Point beak at flower (bird�s head  is center of transform)
+                //Aponta o bico para a flor (a cabeça do pássaro é o centro da transformação)
                 Vector3 toFlower = randomFlower.FlowerCenterPosition - potentialPosition;
                 potentialPosition = Quaternion.LookRotation(toFlower, Vector3.up);
 
@@ -293,35 +293,35 @@ public class HummingbirdAgent : Agent
 
             else
             {
-                //Pick an random height from the ground
+                //Escolhe uma altura aleatória do solo
                 float height = UnityEngine.Random.Range(1.2f, 2.5f);
 
-                //Pick a random radius from the center of the area
+                //Escolhe um raio aleatório do centro da área
                 float radius = UnityEngine.Random.Range(2f, 7f);
 
-                //Pick a random direction rotated around the y axis
+                //Escolhe uma direção aleatória girada em torno do eixo y
                 Quaternion direction = Quaternion.Euler(0f, UnityEngine.Random.Range(-180f, 180f), 0f);
 
-                //Combine height, radius and direction to pick a potential position
+                //Combina altura, raio e direção para escolher uma posição potencial
                 potentialPosition = flowerArea.transform.position + Vector3.up * height + direction * Vector3.forward * radius;
 
-                //Choose and set random starting pitch and yaw
+                //Escolhe e defina arremesso e guinada aleatórios
                 float pitch = UnityEngine.Random.Range(-60f, 60f);
                 float yaw = UnityEngine.Random.Range(-180f, 180f);
                 potentialRotation = Quaternion.Euler(pitch, yaw, 0f);
             }
 
-            //Check to see if the agent will collide with anything
+            //Verifica se o agente irá colidir com alguma coisa
             Collider[] colliders = Physics.OverlapSphere(potentialPosition, 0.05f);
 
-            //Safe position hs been found if no colliders are overlapped
+            //A posição segura é encontrada se nenhum colisor estiver sobreposto
             safePositionFound = colliders.Length == 0;
 
         }
 
         Debug.Assert(safePositionFound, "Could not find a safe position to spawn");
 
-        //Set the position and rotation
+        //Define a posição e rotação
         transform.position = potentialPosition;
         transform.rotation = potentialRotation;
 
@@ -330,7 +330,7 @@ public class HummingbirdAgent : Agent
 
 
     /// <summary>
-    /// Update the nearest flower to the agent
+    /// Atualiza a flor mais próxima do agente
     /// </summary>
     private void UpdateNearestFlower()
     {
@@ -338,16 +338,16 @@ public class HummingbirdAgent : Agent
         {
             if (nearestFlower == null && flower.HasNectar)
             {
-                //No current nearest flower and this flower has nectar, so set to this flower
+                //Nenhuma flor mais próxima atual e esta flor tem néctar, então define para esta flor
                 nearestFlower = flower;
             }
             else if (flower.HasNectar)
             {
-                //Calculate distance to this flower and distance to the current nearest flower
+                //Calcula a distância para esta flor e a distância para a flor mais próxima atual
                 float distanceToFlower = Vector3.Distance(flower.transform.position, beakTip.position);
                 float distanceToCurrentNearestFlower = Vector3.Distance(nearestFlower.transform.position, beakTip.position);
 
-                //If current nearest flower is empty OR this flower is closer, update the nearest flower
+                //Se a flor mais próxima atual estiver vazia OU esta flor estiver mais perto, atualiza a flor mais próxima
                 if (!nearestFlower.HasNectar || distanceToFlower < distanceToCurrentNearestFlower)
                 {
                     nearestFlower = flower;
@@ -358,7 +358,7 @@ public class HummingbirdAgent : Agent
 
 
     /// <summary>
-    /// Called when the agent�s collider enters a trigger collider
+    /// Chamado quando o colisor do agente entra em um colisor de gatilho
     /// </summary>
     /// <param name="other">The trigger collider</param>
     private void OnTriggerEnter(Collider other)
@@ -367,7 +367,7 @@ public class HummingbirdAgent : Agent
     }
 
     /// <summary>
-    /// Called when the agent�s collider stays in a trigger collider
+    /// Chamado quando o colisor do agente permanece em um colisor de gatilho
     /// </summary>
     /// <param name="other">The trigger collider</param>
     private void OnTriggerStay(Collider other)
@@ -377,39 +377,39 @@ public class HummingbirdAgent : Agent
 
 
     /// <summary>
-    /// Handles when the agent�s collider enters or stays in a trigger collider
+    /// Lida com quando o colisor do agente entra ou permanece em um colisor de gatilho
     /// </summary>
     /// <param name="collider">The trigger collider</param>
     private void TriggerEnterOrStay(Collider collider)
     {
-        //Check if agent is colliding with nectar
+        //Verifica se o agente está colidindo com o néctar
         if (collider.CompareTag("nectar"))
         {
             Vector3 closestPointToBeakTip = collider.ClosestPoint(beakTip.position);
 
-            //Check if the closest collision point is close to the beak tip
-            //Note: a colision with anything but the beak tip should not count
+            //Verifique se o ponto de colisão mais próximo está perto da ponta do bico
+            //Nota: uma colisão com qualquer coisa, mas a ponta do bico não deve contar
 
             if (Vector3.Distance(beakTip.position, closestPointToBeakTip) < BeakTipRadius)
             {
-                //look up the flower for this nectar collider
+                //procura a flor para este colisor de néctar
                 Flower flower = flowerArea.GetFlowerFromNectar(collider);
 
-                //Attempt to take .01 nectar
-                //Note: this is per fixed timestep, meaning it happens every .02 seconds, or 50x per second
+                //Tenta tomar 0,01 néctar
+                //Observação: isso ocorre por intervalo de tempo fixo, o que significa que acontece a cada 0,02 segundos ou 50x por segundo
                 float nectarReceived = flower.Feed(.01f);
 
-                //Keep track of nectar obtained
+                //Acompanha o néctar obtido
                 NectarObtained += nectarReceived;
 
                 if (trainingMode)
                 {
-                    //Calculate reward for getting nectar
+                    //Calcula a recompensa por obter néctar
                     float bonus = .02f * Mathf.Clamp01(Vector3.Dot(transform.forward.normalized, -nearestFlower.FlowerUpVector.normalized));
                     AddReward(.01f + bonus);
                 }
 
-                //If flower is empty, update the nearest flower
+                //Se a flor estiver vazia, atualize a flor mais próxima
                 if (!flower.HasNectar)
                 {
                     UpdateNearestFlower();
@@ -419,35 +419,35 @@ public class HummingbirdAgent : Agent
     }
 
     /// <summary>
-    /// Called when the agent collides with something solid
+    /// Chamado quando o agente colide com algo sólido
     /// </summary>
     /// <param name="collision">The collision info</param>
     private void OnCollisionEnter(Collision collision)
     {
         if (trainingMode && collision.collider.CompareTag("boundary"))
         {
-            //Collided with the area boundary, give a negative reward
+            //Colidiu com o limite da área, da uma recompensa negativa
             AddReward(-.5f);
         }
     }
 
     /// <summary>
-    /// Called every frame
+    /// Chamada em cada frame
     /// </summary>
     private void Update()
     {
-        //Draw a line from the beak tip to the nearest flower
+        //Desenha uma linha da ponta do bico até a flor mais próxima
         if (nearestFlower != null)
             Debug.DrawLine(beakTip.position, nearestFlower.FlowerCenterPosition, Color.green);
     }
 
 
     /// <summary>
-    /// Called every .02 seconds
+    /// Chamado a cada 0,02 segundos
     /// </summary>
     private void FixedUpdate()
     {
-        //Avoids scenario where nearest flower nectar is stolen by opponent and not updated
+        //Evita cenário em que o néctar da flor mais próximo é roubado pelo oponente e não é atualizado
         if (nearestFlower != null && !nearestFlower.HasNectar)
             UpdateNearestFlower();
     }

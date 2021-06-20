@@ -3,32 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Manages a collection of flower plants and attached flowers
+/// Gerencia uma coleção de plantas floridas e flores anexas
 /// </summary>
 public class FlowerArea : MonoBehaviour
 {
-    // The diameter of the area where the agent and flowers can be
-    //used for observing relative distance from agent to flower
+    // O diametro da área onde o agente e as flores podem estar
+    //usado para observar a distancia relativa do agente a flor
     public const float AreaDiameter = 20f;
 
-    //The list of all flower plants in this flower area (flower plants have multiple flowers)
+    //A lista de todas as plantas com flores nesta área de flores (as plantas com flores têm várias flores)
     private List<GameObject> flowerPlants;
 
-    //A lookup dictionary for looking up a flower from a nectar collider
+    //Um dicionário de pesquisa para procurar uma flor em um colisor de néctar
     private Dictionary<Collider, Flower> nectarFlowerDictionary;
 
 
     /// <summary>
-    /// The list of all flowers in the flower area
+    /// A lista de todas as flores na área das flores
     /// </summary>
     public List<Flower> Flowers { get; private set; }
 
     /// <summary>
-    /// Reset the flowers and flower plants
+    /// Reinicia as flores e plantas de flores
     /// </summary>
     public void ResetFlowers()
     {
-        //Rotate each flower plant around the Y axis and suvtly around x and z
+        //Gira cada planta de flor em torno do eixo Y e aproximadamente em torno de x e z
         foreach(GameObject flowerPlant in flowerPlants)
         {
             float xRotation = UnityEngine.Random.Range(-5f, 5f);
@@ -38,7 +38,7 @@ public class FlowerArea : MonoBehaviour
             flowerPlant.transform.localRotation = Quaternion.Euler(xRotation, yRotation, zRotation);
         }
 
-        //Reset each flower
+        //Reinicia cada flor
         foreach(Flower flower in Flowers)
         {
             flower.ResetFlower();
@@ -58,11 +58,11 @@ public class FlowerArea : MonoBehaviour
 
 
     /// <summary>
-    /// Called when the area wakes up
+    /// Chamado quando a área acorda
     /// </summary>
     private void Awake()
     {
-        //initialize variables
+        //inicializa variáveis
         flowerPlants = new List<GameObject>();
         nectarFlowerDictionary = new Dictionary<Collider, Flower>();
         Flowers = new List<Flower>();
@@ -70,19 +70,19 @@ public class FlowerArea : MonoBehaviour
 
 
     /// <summary>
-    /// Called when the game starts
+    /// Chamado quando o jogo começa
     /// </summary>
     private void Start()
     {
-        //Find all flowers that are children of this GameObject/Transform
+        //Encontra todas as flores que são filhas deste GameObject / Transform
         FindChildFlowers(transform);
     }
 
 
     /// <summary>
-    /// Recursively finds flowers and flower plants that are children of a parent transform
+    /// Encontra flores recursivamente e plantas de flores que são filhas de um pai transformado
     /// </summary>
-    /// <param name="parent">The parent of the children to check</param>
+    /// <param name="parent">O pai dos filhos para verificar</param>
     private void FindChildFlowers(Transform parent)
     {
         for (int i = 0; i <parent.childCount; i++)
@@ -91,30 +91,30 @@ public class FlowerArea : MonoBehaviour
             
             if(child.CompareTag("flower_plant"))
             {
-                //Found a flower plant, add it to the flowerPlants list
+                //Encontrou uma planta de flor, adicione-a à lista de plantas de flor
                 flowerPlants.Add(child.gameObject);
 
-                //Look for flowers within the flower plant
+                //Procure flores dentro da flor da planta
                 FindChildFlowers(child);
             }
             else
             {
-                //Not a flower plant, look for a Flower component
+                //Não é uma planta de flor, procura um componente de flor
                 Flower flower = child.GetComponent<Flower>();
                 if (flower != null)
                 {
-                    //Found a flower, add it to the Flower list
+                    //Encontrou uma flor, adicione-a à lista de flores
                     Flowers.Add(flower);
 
-                    // Add the nectar collider to the lookup dictionary
+                    // Adicione o colisor de néctar ao dicionário de pesquisa
                     nectarFlowerDictionary.Add(flower.nectarCollider, flower);
 
-                    //Note: There are no flowers that are children of other flowers
+                    //Nota: Não há flores que sejam filhas de outras flores
 
                 }
                 else
                 {
-                    // Flower component not found, so check children
+                    // O componente da flor não foi encontrado, então verifique os filhos
                     FindChildFlowers(child);
                 }
 
